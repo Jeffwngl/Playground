@@ -1,6 +1,7 @@
 import { Shader } from "../helpers/shader";
 import { drawScene } from "../common/drawScene";
 import { initBuffers } from "../helpers/buffer";
+import { resizeCanvas } from "../helpers/utils";
 
 // shaders
 import { vertexShader } from "../shaders/vertex";
@@ -10,6 +11,7 @@ main();
 
 function main() {
   const canvas = document.querySelector("#gl-canvas");
+
   // Initialize the GL context
   const gl = canvas.getContext("webgl");
 
@@ -20,7 +22,6 @@ function main() {
     );
     return;
   }
-
 
   // ---------- RENDERING LOOP ---------- //
   // Set clear color to black, fully opaque
@@ -49,6 +50,13 @@ function main() {
   }
 
   const buffers = initBuffers(gl);
+
+  resizeCanvas(canvas, gl);
+
+  window.addEventListener("resize", () => {
+    resizeCanvas(canvas, gl);
+    drawScene(gl, programInfo, buffers);
+  })
 
   drawScene(gl, programInfo, buffers);
 }
